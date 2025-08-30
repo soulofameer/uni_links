@@ -4,10 +4,10 @@ version '0.4.0'
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()            // jcenter() is sunset
     }
-
     dependencies {
+        // ignored at build time; root project supplies AGP version
         classpath 'com.android.tools.build:gradle:3.5.3'
     }
 }
@@ -15,19 +15,25 @@ buildscript {
 rootProject.allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    // ✅ REQUIRED for AGP 8+: must equal AndroidManifest.xml 'package'
+    namespace "name.avioli.unilinks"
+
+    // Match your app's level (34 commonly used)
+    compileSdkVersion 34
 
     defaultConfig {
-        minSdkVersion 16
+        // Keep ≤ your app's minSdk; 21 is a safe baseline
+        minSdkVersion 21
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     lintOptions {
         disable 'InvalidPackage'
     }
